@@ -1,19 +1,45 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 // Sample words for typing practice
 const WORDS = [
-  "리액트",
-  "자바스크립트",
-  "컴포넌트",
-  "상태관리",
-  "프로그래밍",
-  "개발자",
-  "학습",
-  "코딩",
-  "알고리즘",
-  "타이핑",
+  "santa",
+  "snowman",
+  "tree",
+  "snowflake",
+  "snowball",
+  "carrot",
+  "elf",
+  "jejus",
+  "typing",
+  "practice",
+  "winter",
+  "holiday",
+  "presents",
+  "candies",
+  "cookies",
+  "lights",
+  "milk",
+  "sleigh",
+  "reindeer",
+  "chimney",
+  "wreath",
+  "ornaments",
+  "stockings",
+  "gingerbread",
+  "candles",
+  "snowglobe",
+  "snowstorm",
+  "frosty",
+  "icicles",
+  "mittens",
+  "scarf",
+  "boots",
+  "jacket",
+  "hotcocoa",
+  "fireplace",
 ];
 
 // Styled Components
@@ -79,6 +105,7 @@ const Button = styled.button`
 `;
 
 function English() {
+  const location = useLocation();
   const navigate = useNavigate();
   const [currentWord, setCurrentWord] = useState("");
   const [inputValue, setInputValue] = useState("");
@@ -89,6 +116,8 @@ function English() {
   const inputRef = useRef(null);
   const canvasRef = useRef(null); // Reference for canvas
   const [rotationAngle, setRotationAngle] = useState(0); // State to control the rotation angle
+  const Kscore = location.state?.score;
+  const name = location.state?.nameValue;
 
   // Select a random word
   const selectRandomWord = () => {
@@ -96,8 +125,22 @@ function English() {
     return WORDS[randomIndex];
   };
 
-  const handleGameEnd = () => {
-    navigate("/snowman"); // 결과 페이지로 점수 전달
+  const handleGameEnd = async () => {
+    console.log(name, Kscore, score);
+    try {
+      const response = await axios.post(
+        "https://port-0-snowmantaja-m4i0iy3b2d0cd031.sel4.cloudtype.app/scores/",
+        {
+          name: name,
+          korean: Kscore,
+          english: score,
+        }
+      );
+      console.log("Post created:", response.data);
+      navigate(`/snowman`, { state: { name, Kscore, score } }); // 결과 페이지로 점수 전달
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
   };
 
   // Start the game

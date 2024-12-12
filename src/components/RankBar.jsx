@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const RankBarContainer = styled.div`
   width: 20%;
@@ -127,12 +128,22 @@ const PopupContainer = styled.div`
 `;
 
 function RankBar() {
-  const rankings = [
-    { name: "Santa", korean: 95, english: 90, total: 185 },
-    { name: "Elf", korean: 88, english: 92, total: 180 },
-    { name: "Snowman", korean: 75, english: 85, total: 160 },
-    { name: "Reindeer", korean: 65, english: 70, total: 135 },
-  ];
+  const [rankings, setRankings] = useState([]);
+  useEffect(() => {
+    // 데이터를 가져오는 비동기 함수
+    const fetchRankings = async () => {
+      try {
+        const response = await axios.get(
+          "https://port-0-snowmantaja-m4i0iy3b2d0cd031.sel4.cloudtype.app/scores/sorted/"
+        ); // API URL
+        setRankings(response.data); // 데이터를 상태로 설정
+      } catch (error) {
+        console.error("Failed to fetch rankings:", error);
+      }
+    };
+
+    fetchRankings();
+  }, []); // 컴포넌트가 처음 렌더링될 때 실행
 
   const [popupData, setPopupData] = useState(null);
 

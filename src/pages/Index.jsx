@@ -4,16 +4,40 @@ import { useNavigate } from "react-router-dom";
 
 // Sample words for typing practice
 const WORDS = [
-  "리액트",
-  "자바스크립트",
-  "컴포넌트",
-  "상태관리",
-  "프로그래밍",
-  "개발자",
-  "학습",
-  "코딩",
-  "알고리즘",
-  "타이핑",
+  "산타클로스",
+  "크리스마스",
+  "선물",
+  "순록",
+  "눈사람",
+  "캐롤",
+  "휴일",
+  "초콜릿",
+  "사탕",
+  "장식",
+  "나무",
+  "눈",
+  "얼음",
+  "코트",
+  "목도리",
+  "장갑",
+  "모자",
+  "스케이트",
+  "스키",
+  "눈썰매",
+  "눈덩이",
+  "눈사람",
+  "눈싸움",
+  "엘프",
+  "케이크",
+  "초대장",
+  "파티",
+  "축제",
+  "불꽃놀이",
+  "휴일",
+  "행복",
+  "사랑",
+  "가족",
+  "친구",
 ];
 
 // Styled Components
@@ -99,6 +123,12 @@ function Index() {
   const inputRef = useRef(null);
   const canvasRef = useRef(null); // Reference for canvas
   const [rotationAngle, setRotationAngle] = useState(0); // State to control the rotation angle
+  const [nameValue, setNameValue] = useState("");
+
+  // 입력값 변경 핸들러
+  const handleNameChange = (event) => {
+    setNameValue(event.target.value);
+  };
 
   // Select a random word
   const selectRandomWord = () => {
@@ -107,7 +137,7 @@ function Index() {
   };
 
   const handleGameEnd = () => {
-    navigate("/english"); // 결과 페이지로 점수 전달
+    navigate("/english", { state: { score, nameValue } }); // 결과 페이지로 점수 전달
   };
 
   // Start the game
@@ -326,7 +356,11 @@ function Index() {
               : "눈사람 몸통 만들기"}
           </h2>
           {timeLeft === 0 ? null : (
-            <InputName placeholder="눈사람 이름을 지어주세요" />
+            <InputName
+              placeholder="눈사람 이름을 지어주세요"
+              value={nameValue} // 상태를 input 값으로 연결
+              onChange={handleNameChange} // 변경 핸들러 연결
+            />
           )}
           {timeLeft === 0 ? (
             <Button onClick={handleGameEnd}>머리 만들기</Button> // 결과 페이지로 이동

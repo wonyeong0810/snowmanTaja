@@ -2,6 +2,7 @@ import React from "react";
 import RankBar from "../components/RankBar";
 import CanvasArea from "../components/CanvasArea";
 import styled from "styled-components";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -32,6 +33,7 @@ const Snowflake = styled.div`
 `;
 
 function Snowman() {
+  const location = useLocation();
   const snowflakes = Array.from({ length: 50 }).map((_, i) => ({
     id: i,
     top: Math.random() * 100,
@@ -40,9 +42,13 @@ function Snowman() {
     duration: Math.random() * 10 + 5,
   }));
 
+  const Kscore = location.state?.Kscore;
+  const name = location.state?.nameValue;
+  const Escore = location.state?.Score;
+
   return (
     <Container>
-      <CanvasArea />
+      <CanvasArea name={name} Kscore={Kscore} Escore={Escore} />
       <RankBar />
       {snowflakes.map(({ id, top, left, size, duration }) => (
         <Snowflake
